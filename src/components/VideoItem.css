@@ -4,6 +4,6 @@
   cursor: pointer;
 }
 
-.video-item img {
+.video-item .image {
   max-width: 180px;
 }
