@@ -6,13 +6,20 @@ import VideoDetails from "./VideoDetails"
 
 class App extends React.Component {
   state = { videos: [], selectedVideo: null }
+
+  componentDidMount() {
+    this.ontermSubmit("Cars")
+  }
   ontermSubmit = async term => {
     const respnse = await youtube.get("/search", {
       params: {
         q: term
       }
     })
-    this.setState({ videos: respnse.data.items })
+    this.setState({
+      videos: respnse.data.items,
+      selectedVideo: respnse.data.items[0]
+    })
   }
   onVideoSelect = video => {
     this.setState({ selectedVideo: video })
@@ -21,8 +28,16 @@ class App extends React.Component {
     return (
       <div className="ui container">
         <SearchBar onFormSubmit={this.ontermSubmit} />
-        <VideoDetails video={this.state.selectedVideo} />
-        <VideoList videos={this.state.videos} onVideoSelect={this.onVideoSelect} />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <VideoDetails video={this.state.selectedVideo} />
+            </div>
+            <div className="five wide column">
+              <VideoList videos={this.state.videos} onVideoSelect={this.onVideoSelect} />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
